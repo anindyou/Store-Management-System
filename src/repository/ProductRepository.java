@@ -15,14 +15,12 @@ public class ProductRepository {
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            // 3. Isi tanda tanya (?) sesuai urutan di query SQL atas
-            stmt.setString(1, product.getName());           // Mengisi ? pertama (name) dengan String
-            stmt.setDouble(2, product.getPrice());          // Mengisi ? kedua (price) dengan Double
-            stmt.setInt(3, product.getStock());             // Mengisi ? ketiga (stock) dengan Integer
-            stmt.setInt(4, product.getStockThreshold());    // Mengisi ? keempat (stock_threshold) dengan Integer
+            stmt.setString(1, product.getName());
+            stmt.setDouble(2, product.getPrice());
+            stmt.setInt(3, product.getStock());
+            stmt.setInt(4, product.getStockThreshold());
 
-            // 4. Eksekusi query ke database
-            int rowsInserted = stmt.executeUpdate(); // executeUpdate digunakan untuk INSERT, UPDATE, DELETE
+            int rowsInserted = stmt.executeUpdate();
 
             if (rowsInserted > 0) {
                 System.out.println("Repository: Produk '" + product.getName() + "' berhasil disimpan ke database!");

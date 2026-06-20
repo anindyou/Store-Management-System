@@ -6,17 +6,14 @@ import repository.ProductRepository;
 import java.util.List;
 
 public class ProductService {
-    // Service membutuhkan Repository untuk mengakses database
     private ProductRepository productRepository = new ProductRepository();
 
     public void registerNewProduct(Product product) {
         Product existingProduct = productRepository.getProductByName(product.getName());
-        // Jika product sudah ada, maka kita tidak bisa menambahkannya ke database
         if (existingProduct != null) {
             System.out.println("Service: Gagal menambahkan! Produk dengan nama '"
                     + product.getName() + "' sudah terdaftar dengan ID " + existingProduct.getId() + ".");
         } else {
-            // 3. Jika belum ada, baru aman untuk disimpan ke database lewat repository
             productRepository.addProduct(product);
         }
     }
@@ -24,7 +21,6 @@ public class ProductService {
     public List<Product> getAllProducts() {
         List<Product> products = productRepository.getAllProducts();
 
-        // Logika bisnis tambahan: memberi tahu manajer jika data di toko masih kosong
         if (products.isEmpty()) {
             System.out.println("Service: Belum ada produk yang terdaftar di database.");
         }
@@ -45,7 +41,7 @@ public class ProductService {
             return;
         }
 
-        // Update stock di objek Java
+        // Update stock
         int newStock = product.getStock() - quantity;
         product.setStock(newStock);
 
