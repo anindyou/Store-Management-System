@@ -121,21 +121,27 @@ public class CustomerMenu {
             System.out.println("Keranjangmu kosong, tidak ada yang bisa di-checkout!");
             return;
         }
-
+        boolean succeed = productService.checkoutCart(customer);
         System.out.println("\n--- Memproses Checkout... ---");
 
-        System.out.println("\n================= STRUK BELANJA =================");
-        System.out.println("Pelanggan: " + customer.getName());
-        System.out.println("-------------------------------------------------");
-        for (CartItem item : customer.getCart()) {
-            System.out.printf("%-15s x%-3d : Rp%.0f\n",
-                    item.getProduct().getName(), item.getQuantity(), item.getSubtotal());
+        if (succeed) {
+            System.out.println("\n================= STRUK BELANJA =================");
+            System.out.println("Pelanggan: " + customer.getName());
+            System.out.println("-------------------------------------------------");
+            for (CartItem item : customer.getCart()) {
+                System.out.printf("%-15s x%-3d : Rp%.0f\n",
+                        item.getProduct().getName(), item.getQuantity(), item.getSubtotal());
 
-            productService.purchaseProduct(item.getProduct().getId(), item.getQuantity());
+                productService.purchaseProduct(item.getProduct().getId(), item.getQuantity());
+            }
+            System.out.println("-------------------------------------------------");
+            System.out.printf("TOTAL HARGA: Rp%.2f\n", customer.getTotalCartPrice());
+            System.out.println("=================================================");
+            System.out.println("Terima kasih sudah berbelanja!");
+
+            customer.clearCart();
+        } else {
+            System.out.println("Transaksi Gagal: Stok berubah/habis ");
         }
-        System.out.println("-------------------------------------------------");
-        System.out.printf("TOTAL HARGA: Rp%.2f\n", customer.getTotalCartPrice());
-        System.out.println("=================================================");
-        System.out.println("Terima kasih sudah berbelanja!");
     }
 }
